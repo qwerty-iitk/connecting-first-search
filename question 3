@@ -12,6 +12,7 @@ vector<int>current_cc;
 void dfs(int vertex)
  {
     vis[vertex]=true;
+    current_cc.push_back(vertex)
     for(int child:g[vertex])
     {
         if(vis[child])
