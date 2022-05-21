@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+#include <queue>
+
+using namespace std;
+
+const int N=1e5+10;
+vector<int> g[N];
+
+int vis[N];
+int level[N];
+
+void bfs(int source)
+{
+    queue<int>q;
+    q.push(source);
+    vis[source]=1;
+
+    while(!q.empty())
+    {
+        int cur_v=q.front();
+        q.pop();
+        for(int child :g[cur_v])
+        {
+            if(!vis[child])
+            {
+                q.push(child);
+                vis[child]=1;
+                level[child]=level[cur_v]+1;
+            }
+        }
+    }
+}
+
+int main()
+{
+     int  n,e;
+    cin>>n>>e;
+    for(int i=0;i<e;i++)
+    {
+        int x,y;
+        cin>>x>>y;
+        g[x].push_back(y);
+        g[y].push_back(x);
+
+
+
+    }
+    cout<<"Enter the vertex from which distance has to be calculted\n ";
+    int s;
+    cin>>s;
+    bfs(s);
+    for(int i=0;i<n;i++)
+    {
+        if(vis[i])
+        cout<<i<<": "<<level[i]<<endl;
+        else
+        cout<<i<<": -1"<<endl;
+    }
+}
