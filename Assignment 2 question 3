@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+#include <stack>
+using namespace std;
+
+const int N =1e5+10;
+
+vector<bool>vis(N,false);
+vector<int>g[N];
+vector<int>t(N);
+vector<int>transpose[N];
+
+stack<int> st;
+
+
+
+void dfs(int vertex)
+ {
+    vis[vertex]=true;
+  
+  
+    for(int child:g[vertex])
+    {
+        if(vis[child])
+        continue;
+        dfs(child);
+           
+    }
+   st.push(vertex);
+}
+
+void rev (int vertex,int ctr)
+{
+    vis[vertex]=true;
+  
+    t[vertex]=ctr;
+
+    for(int child:transpose[vertex])
+    {
+        if(vis[child])
+        continue;
+
+        rev(child,ctr);
+           
+    }
+
+}
+
+int main()
+{
+    int  n,e;
+    cin>>n>>e;
+    for(int i=1;i<=e;i++)
+    {
+        int x,y;
+        cin>>x>>y;
+        g[x].push_back(y);
+       
+
+
+
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(vis[i])continue;
+        dfs(i);
+
+     
+    }
+    for(int i=1;i<=n;i++)
+    {
+        vis[i]=false;
+        for(auto it:g[i])
+        {
+            transpose[it].push_back(i);
+        }
+        
+
+    }
+     int ctr=1;
+    while(!st.empty())
+    {
+        int node=st.top();
+        st.pop();
+        if(!vis[node])
+        {
+           rev(node,ctr);
+           ctr++;
+        }
+    }
+ 
+    cout<<ctr-1<<"\n";
+    for(int i=1;i<=n;i++)
+    {
+        cout<<t[i]<<" ";
+
+    }
+}
