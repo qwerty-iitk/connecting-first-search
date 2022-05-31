@@ -1,0 +1,58 @@
+//assuming that graph is DAG as specified in the question
+#include<bits/stdc++.h>
+#include <stack>
+using namespace std;
+
+const int N =1e5+10;
+
+vector<bool>vis(N,false);
+vector<int>g[N];
+
+stack<int> st;
+
+
+
+void dfs(int vertex)
+ {
+    vis[vertex]=true;
+  
+  
+    for(int child:g[vertex])
+    {
+        if(vis[child])
+        continue;
+        dfs(child);
+           
+    }
+   st.push(vertex);
+}
+
+int main()
+{
+    int  n,e;
+    cin>>n>>e;
+    for(int i=1;i<=e;i++)
+    {
+        int x,y;
+        cin>>x>>y;
+        g[x].push_back(y);
+       
+
+
+
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(vis[i])continue;
+        dfs(i);
+
+     
+    }
+    for(int i=1;i<=n;i++)
+    {
+        
+        cout << ' ' << st.top();
+        st.pop();
+
+    }
+}
