@@ -1,0 +1,137 @@
+#include<bits/stdc++.h>
+#include <stack>
+using namespace std;
+ 
+const int N =1e6+10;
+ 
+vector<bool>vis(N,false);
+vector<int>g[N];
+vector<int>t(N);
+vector<int>transpose[N];
+ 
+stack<int> st;
+ 
+ 
+ 
+void dfs(int vertex)
+ {
+    vis[vertex]=true;
+  
+  
+    for(int child:g[vertex])
+    {
+        if(vis[child])
+        continue;
+        dfs(child);
+           
+    }
+   st.push(vertex);
+}
+ 
+void rev (int vertex,int ctr)
+{
+    vis[vertex]=true;
+  
+    t[vertex]=ctr;
+ 
+    for(int child:transpose[vertex])
+    {
+        if(vis[child])
+        continue;
+ 
+        rev(child,ctr);
+           
+    }
+ 
+}
+ 
+int main()
+{
+    int  n,e,x1,y1;
+    char sign1,sign2;
+    cin>>e>>n;
+    n=2*n+1;
+    for(int i=1;i<=e;i++)
+    {
+        int x,y;
+        cin>>sign1>>x>>sign2>>y;
+
+        if(sign1=='+')
+       {
+
+        x=2*x;
+        x1=x+1;
+       }
+       else
+       {
+          x=2*x +1;
+          x1=x-1;
+       }
+        if(sign2=='+')
+        {
+        y=2*y;
+        y1=y+1;
+        }
+         else
+       {
+          y=2*y +1;
+          y1=y-1;
+       }
+
+        g[x1].push_back(y);
+        g[y1].push_back(x);
+       
+ 
+ 
+ 
+    }
+    for(int i=1;i<=n;i++)
+    {
+        if(vis[i])continue;
+        dfs(i);
+ 
+     
+    }
+    for(int i=1;i<=n;i++)
+    {
+        vis[i]=false;
+        for(auto it:g[i])
+        {
+            transpose[it].push_back(i);
+        }
+        
+ 
+    }
+     int ctr=1;
+    while(!st.empty())
+    {
+        int node=st.top();
+        st.pop();
+        if(!vis[node])
+        {
+           rev(node,ctr);
+           ctr++;
+        }
+    }
+     char assign[n];
+    for(int k=2;k<=n;k=k+2)
+    {
+        if(t[k]==t[k+1])
+        {
+            cout<<"IMPOSSIBLE";
+            return 0;
+        }
+        if(t[k]>t[k+1])
+        {
+            assign[k]='+';
+
+        }
+        else
+        assign[k]='-';
+        
+    }
+    for(int k=2;k<=n;k=k+2)
+    cout<<assign[k]<<" ";
+   
+    
+}
