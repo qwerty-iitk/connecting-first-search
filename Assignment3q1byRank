@@ -1,0 +1,69 @@
+#include<bits/stdc++.h>
+#include<vector>
+#include<string>
+using namespace std;
+
+const int N =1e5+10;
+
+vector <int> parent(N);
+vector <int> rank1(N);
+
+
+void make(int v)
+{
+    parent[v]=v;
+    rank1[v]=0;
+}
+
+int find_set(int v)
+{
+    if(v==parent[v])
+    return v;
+    return parent[v]=find_set(parent[v]);
+}
+
+
+void unionS(int a,int b)
+{
+    a=find_set(a);
+     b=find_set(b);
+    if(a!=b)
+    {
+        if(rank1[a]<rank1[b])
+        
+            swap(a,b);
+
+            parent[b]=a;
+            if(rank1[a]==rank1[b])
+            rank1[a]+=1;
+
+
+        
+    }
+}
+int main()
+{
+    int n,m,x,y;
+    string s;
+    cin>>n>>m;
+    for(int i=1;i<=n;i++)
+    {
+        make(i);                                                               
+    }
+    for(int i=1;i<=m;i++)
+    {
+         cin>>s>>x>>y;
+         if(s[0]=='u')
+         {
+             unionS(x,y);
+             continue;
+         }
+         
+    
+     
+     if (find_set(x)==find_set(y))
+    cout<<"YES\n";
+    else
+    cout<<"NO\n";
+    }
+}
